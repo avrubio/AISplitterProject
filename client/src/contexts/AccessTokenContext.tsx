@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 /**
  * For using TypeScript and the Context API,
@@ -14,6 +14,7 @@ type AccessTokenContextType = {
   hasToken: Function;
   login: Function;
   logout: Function;
+  isAuthenticated: Function;
 };
 
 type AccessTokenProviderProps = {
@@ -32,6 +33,7 @@ export const AccessTokenContext = createContext<AccessTokenContextType>(
     hasToken: () => null,
     login: () => null,
     logout: () => null,
+    isAuthenticated: () => null,
   }
 );
 
@@ -40,6 +42,12 @@ export function AccessTokenProvider({ children }: AccessTokenProviderProps) {
    * Storing the JWT token in the Context API
    */
   const [token, setToken] = useState("");
+
+  /**
+   * @returns {boolean} whether or not the token is stored in the Context API.
+   * In other words, whether or not the user is logged in.
+   */
+  const isAuthenticated = (): boolean => !!token; // Define isAuthenticated
 
   /**
    * @returns JWT token. Use to determine if the user is logged in.
@@ -73,6 +81,7 @@ export function AccessTokenProvider({ children }: AccessTokenProviderProps) {
         hasToken,
         login,
         logout,
+        isAuthenticated,
       }}
     >
       {children}
