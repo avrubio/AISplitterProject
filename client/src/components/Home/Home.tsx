@@ -1,15 +1,10 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useContext, useEffect, useState } from "react";
 
-import axios from 'axios';
+import axios from "axios";
 
-import Box from '@mui/material/Box/Box';
+import Box from "@mui/material/Box/Box";
 
-import { AccessTokenContext } from '../../contexts/AccessTokenContext';
+import { AccessTokenContext } from "../../contexts/AccessTokenContext";
 
 interface IUser {
   id: number;
@@ -33,7 +28,7 @@ function Home() {
   /**
    * Getting access token from the Context API
    */
-  const { getToken, logout } = useContext(AccessTokenContext);
+  const { getToken } = useContext(AccessTokenContext);
 
   const getUsers = useCallback(async () => {
     try {
@@ -73,13 +68,9 @@ function Home() {
       <div className="container mt-2 mb-5">
         <div className="d-flex justify-content-between">
           <h1 className="h2">You are logged in!</h1>
-          <button
-            type="button"
-            className="btn btn-primary mb-2"
-            onClick={() => logout()}
-          >
-            Logout
-          </button>
+          {/* <button type="button" className="btn btn-primary mb-2" onClick={Login}> */}
+          Go to Text splitter
+          {/* </button> */}
         </div>
         {users.map((user) => {
           const key = `user-${user.id}`;
@@ -91,11 +82,11 @@ function Home() {
             </div>
           );
         })}
-        {errorMessage && (
+        {/* {errorMessage && (
           <div className="alert alert-danger" role="alert">
             {errorMessage}
           </div>
-        )}
+        )} */}
       </div>{" "}
     </Box>
   );

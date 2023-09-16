@@ -1,21 +1,26 @@
-import * as React from 'react';
+import * as React from "react";
+import { useContext } from "react";
 
-import AdbIcon from '@mui/icons-material/Adb';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import { Link } from "react-router-dom";
 
-const pages = ["History", "Text", "Youtube Transcript"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import AdbIcon from "@mui/icons-material/Adb";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Avatar } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+
+import { AccessTokenContext } from "../contexts/AccessTokenContext";
+
+const pages = ["History", "Text Splitter", "Youtube Text Splitter"];
+const settings = ["Logout"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -24,6 +29,8 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const { logout } = useContext(AccessTokenContext);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,8 +55,8 @@ function Header() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link} // Use Link component instead of "a"
+            to="/" // Specify the URL to navigate to
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -103,8 +110,8 @@ function Header() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/"
+            component={Link} // Use Link component instead of "a"
+            to="/" // Specify the URL to navigate to
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -122,7 +129,8 @@ function Header() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                component={Link} // Use Link component instead of "button"
+                to={`/${page.toLowerCase().replace(" ", "")}`} // Specify the URL to navigate to
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
@@ -133,7 +141,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Wall-e" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -153,7 +161,7 @@ function Header() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => logout()}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
