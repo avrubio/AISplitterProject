@@ -3,7 +3,6 @@ import { useContext } from "react";
 
 import { Link } from "react-router-dom";
 
-import AdbIcon from "@mui/icons-material/Adb";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -56,7 +55,7 @@ function Header() {
             variant="h6"
             noWrap
             component={Link} // Use Link component instead of "a"
-            to="/" // Specify the URL to navigate to
+            to="/test" // Specify the URL to navigate to
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -106,7 +105,7 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -123,7 +122,7 @@ function Header() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            AI Text Splitter
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
