@@ -3,6 +3,8 @@ import {
   useState,
 } from 'react';
 
+import useClipboard from 'react-use-clipboard';
+
 import { Container } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,6 +14,15 @@ import Typography from '@mui/material/Typography';
 
 function TextSplitter() {
   const [inputValue, setInputValue] = useState<string>("");
+  const [isCopied, setCopied] = useClipboard(`
+  The total length of the content that I want to send you is too large
+  to send in only one piece. 
+  For sending you that content, I will follow this rule: 
+  [START PART 1/10] this is the content of the part 1 out of 10 in total 
+  [END PART 1/10] Then you just answer: "Received part 1/10" 
+  And when I tell you "ALL PARTS SENT", then you can continue
+  processing the data and answering my requests
+`);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -139,6 +150,7 @@ function TextSplitter() {
 
           textDecoration: "none",
         }}
+        onClick={setCopied}
       >
         Copy Instructions (First Step before sending chunks of text to ChatGPT)
       </Button>
