@@ -7,8 +7,6 @@ function App() {
     <AccessTokenProvider>
       <Header></Header>
       <Router />
-      {/* <Route path="/textsplitter" element={<TextSplitter />} />
-      <Route path="/YoutubeTextSplitter" element={<YoutubeTextSplitter />} /> */}
     </AccessTokenProvider>
   );
 }
