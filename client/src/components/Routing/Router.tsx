@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
+import { Route, Routes } from "react-router-dom";
 
-import Login from "../Login/Login";
-import Home from "../Home/Home";
 import FileNotFound from "../FileNotFound/FileNotFound";
+import Home from "../Home/Home";
+import TextSplitter from "../Splitters/TextSplitter";
+import ProtectedRoute from "./ProtectedRoute";
 
 function Router() {
   return (
@@ -17,8 +17,8 @@ function Router() {
           </ProtectedRoute>
         }
       />
-
-      <Route path="/login" element={<Login />} />
+      {/* TODO:: ADD Login component back, this is temp since server isnt running */}
+      <Route path="/login" element={<TextSplitter />} />
 
       {/* If no matches, display a 404 File Not Found page if logged in. If not logged in, the <ProtectedRoute /> will redirect to the login form. */}
       <Route
@@ -29,6 +29,9 @@ function Router() {
           </ProtectedRoute>
         }
       />
+      {/* TODO add these routes back once everything should be running as normal */}
+      {/* <Route path="/textsplitter" element={<TextSplitter />} />
+      <Route path="/youtubetextsplitter" element={<YoutubeTextSplitter />} /> */}
     </Routes>
   );
 }
