@@ -116,6 +116,7 @@ function TextSplitter() {
 
       <Box
         sx={{
+          position: "relative",
           border: "1px solid #ccc",
           borderRadius: "4px",
           padding: "16px",
@@ -124,6 +125,18 @@ function TextSplitter() {
           color: "#999999",
         }}
       >
+        <Typography
+          variant="body2"
+          sx={{
+            position: "absolute",
+            top: "-10px", // Adjust as needed to align with the border
+            left: "8px", // Adjust as needed for positioning
+            backgroundColor: "white", // Semi-transparent background color
+            padding: "0 4px",
+          }}
+        >
+          Instructions
+        </Typography>
         <div>
           <p>
             The total length of the content that I want to send you is too large
