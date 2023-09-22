@@ -26,8 +26,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AccessTokenProvider>
-        <Header></Header>
-        <Router />
+        <Header /> <Router />
       </AccessTokenProvider>
     </ThemeProvider>
   );

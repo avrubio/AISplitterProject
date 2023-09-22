@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { useContext } from 'react';
 
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar } from '@mui/material';
@@ -17,11 +20,14 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { AccessTokenContext } from '../contexts/AccessTokenContext';
+import HistoryDrawer from './History/HistoryDrawer';
 
-const pages = ["History", "Text Splitter", "Youtube Text Splitter"];
+const pages = ["Text Splitter", "Youtube Text Splitter"];
 const settings = ["Logout"];
 
 function Header() {
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -34,6 +40,7 @@ function Header() {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -67,7 +74,6 @@ function Header() {
           >
             AI Text Splitter
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -98,13 +104,18 @@ function Header() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    navigate(`/${page.toLowerCase().replace(/\s+/g, "")}`);
+                  }}
+                >
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-
           <Typography
             variant="h5"
             noWrap
@@ -123,6 +134,8 @@ function Header() {
           >
             AI Text Splitter
           </Typography>
+
+          <HistoryDrawer />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
