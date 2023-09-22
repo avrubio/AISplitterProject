@@ -1,5 +1,6 @@
 import React, {
   ChangeEvent,
+  useEffect,
   useState,
 } from 'react';
 
@@ -13,24 +14,23 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 function YoutubeTextSplitter() {
-  const [transcriptText, setTranscriptText] = useState<string>(""); // Initialize as an empty string
+  const [transcriptText, setTranscriptText] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [textChunks, setTextChunks] = useState<string[]>([]);
 
   const fetchTranscript = async (url: string) => {
     try {
       const response = await axios.get(`/api/youtube-transcript?url=${url}`);
       const dataResult = response.data.result;
 
-      // Extract the 'text' properties and join them with spaces
       const joinedText = dataResult
         .map((obj: { text: string }) => obj.text)
         .join(" ");
 
-      setTranscriptText(joinedText); // Update the state with the fetched transcript text
-
-      console.log(joinedText);
+      setTranscriptText(joinedText);
       return response.data.result;
     } catch (error) {
-      console.error(`Failed to fetch transcript: ${error}`);
+      alert(`Failed to fetch transcript: ${error}`);
       throw error;
     }
   };
@@ -41,7 +41,7 @@ function YoutubeTextSplitter() {
     transcriptText: string;
   }) => {
     const containerStyle: React.CSSProperties = {
-      maxHeight: "200px", // Adjust the maximum height as needed
+      maxHeight: "200px",
       overflowY: "auto",
     };
 
@@ -52,9 +52,28 @@ function YoutubeTextSplitter() {
     );
   };
 
-  const handleUrl = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleUrl = (event: ChangeEvent<HTMLInputElement>) => {
     const url = event.target.value;
     fetchTranscript(url);
+  };
+
+  const handleChange = (newTranscript: string) => {
+    setInputValue(newTranscript);
+    const chunkSize = 4000;
+    const chunks: string[] = [];
+
+    const characters = Array.from(newTranscript);
+
+    for (let i = 0; i < characters.length; i += chunkSize) {
+      const chunk = characters.slice(i, i + chunkSize).join("");
+      chunks.push(chunk);
+    }
+
+    setTextChunks(chunks);
+  };
+
+  const handleCopy = (chunk: string) => {
+    navigator.clipboard.writeText(chunk);
   };
 
   const [isCopied, setCopied] = useClipboard(`
@@ -66,6 +85,11 @@ function YoutubeTextSplitter() {
   And when I tell you "ALL PARTS SENT", then you can continue
   processing the data and answering my requests
 `);
+
+  useEffect(() => {
+    handleChange(transcriptText);
+  }, [transcriptText]);
+
   return (
     <Container
       maxWidth="xl"
@@ -163,14 +187,29 @@ function YoutubeTextSplitter() {
           }}
         ></Typography>
         <TranscriptDisplay transcriptText={transcriptText} />
-
-        {/* TODO ///////
-        add copy parts buttons here, and create functionaility that splits up the portions of the transcript to meet the 4000 character limit chat gpt has
-
-
-        functionaility should be able to split and based of the modulous create how evr many buttons needed for # of parts 
-        */}
       </Box>
+      <div>
+        {textChunks.map((chunk, index) => (
+          <Button
+            key={index}
+            variant="contained"
+            sx={{
+              mt: 2,
+              mr: 2,
+              display: "inline-flex",
+              ml: 10,
+              fontWeight: 400,
+              letterSpacing: ".3rem",
+              textDecoration: "none",
+              borderRadius: 5,
+              alignItems: "center",
+            }}
+            onClick={() => handleCopy(chunk)}
+          >
+            {`Copy Chunk ${index + 1} to Clipboard`}
+          </Button>
+        ))}
+      </div>
       <Box
         sx={{
           position: "relative",
