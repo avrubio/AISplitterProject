@@ -1,10 +1,17 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
-import axios from "axios";
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-import Box from "@mui/material/Box/Box";
+import Box from '@mui/material/Box/Box';
+import Button from '@mui/material/Button';
 
-import { AccessTokenContext } from "../../contexts/AccessTokenContext";
+import { AccessTokenContext } from '../../contexts/AccessTokenContext';
 
 interface IUser {
   id: number;
@@ -68,9 +75,39 @@ function Home() {
       <div className="container mt-2 mb-5">
         <div className="d-flex justify-content-between">
           <h1 className="h2">You are logged in!</h1>
-          {/* <button type="button" className="btn btn-primary mb-2" onClick={Login}> */}
-          Go to Text splitter
-          {/* </button> */}
+
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              mr: 2,
+              display: { md: "flex" },
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              textDecoration: "none",
+            }}
+            component={Link} // Use Link component instead of "button"
+            to={`/textsplitter`}
+            // onClick={}
+          >
+            Go to Text Splitter
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 2,
+              mr: 2,
+              display: { md: "flex" },
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              textDecoration: "none",
+            }}
+            component={Link} // Use Link component instead of "button"
+            to={`/youtubetextsplitter`}
+            // onClick={}
+          >
+            Go to Youtube Text Splitter
+          </Button>
         </div>
         {users.map((user) => {
           const key = `user-${user.id}`;
