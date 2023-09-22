@@ -1,3 +1,9 @@
+import React, {
+  ChangeEvent,
+  useState,
+} from 'react';
+
+import axios from 'axios';
 import useClipboard from 'react-use-clipboard';
 
 import { Container } from '@mui/material';
@@ -7,18 +13,50 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 function YoutubeTextSplitter() {
-  // const fetchTranscript = async (url: String) => {
-  //   try {
-  //     // "/api/youtube-transcript?url=https://www.youtube.com/watch?v=TkTqzWgrFxA&t=1719s"
-  //     const data = await axios.get(url);
-  //     console.log(data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error(`Failed to fetch transcript: ${error}`);
-  //     throw error;
-  //   }
-  // };
-  // fetchTranscript();
+  const [transcriptText, setTranscriptText] = useState<string>(""); // Initialize as an empty string
+
+  const fetchTranscript = async (url: string) => {
+    try {
+      const response = await axios.get(`/api/youtube-transcript?url=${url}`);
+      const dataResult = response.data.result;
+
+      // Extract the 'text' properties and join them with spaces
+      const joinedText = dataResult
+        .map((obj: { text: string }) => obj.text)
+        .join(" ");
+
+      setTranscriptText(joinedText); // Update the state with the fetched transcript text
+
+      console.log(joinedText);
+      return response.data.result;
+    } catch (error) {
+      console.error(`Failed to fetch transcript: ${error}`);
+      throw error;
+    }
+  };
+
+  const TranscriptDisplay = ({
+    transcriptText,
+  }: {
+    transcriptText: string;
+  }) => {
+    const containerStyle: React.CSSProperties = {
+      maxHeight: "200px", // Adjust the maximum height as needed
+      overflowY: "auto",
+    };
+
+    return (
+      <div style={containerStyle}>
+        <p>{transcriptText}</p>
+      </div>
+    );
+  };
+
+  const handleUrl = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const url = event.target.value;
+    fetchTranscript(url);
+  };
+
   const [isCopied, setCopied] = useClipboard(`
   The total length of the content that I want to send you is too large
   to send in only one piece. 
@@ -57,6 +95,7 @@ function YoutubeTextSplitter() {
         id="filled-basic"
         label="Youtube URL"
         variant="outlined"
+        onChange={handleUrl}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -102,6 +141,36 @@ function YoutubeTextSplitter() {
         Generate Transcript
       </Button>
 
+      <Box
+        sx={{
+          position: "relative",
+
+          borderRadius: "4px",
+          padding: "16px",
+          marginTop: "16px",
+          backgroundColor: "white",
+          color: "black",
+        }}
+      >
+        <Typography
+          variant="body2"
+          sx={{
+            position: "absolute",
+            top: "-10px", // Adjust as needed to align with the border
+            left: "8px", // Adjust as needed for positioning
+            backgroundColor: "white", // Semi-transparent background color
+            padding: "0 4px",
+          }}
+        ></Typography>
+        <TranscriptDisplay transcriptText={transcriptText} />
+
+        {/* TODO ///////
+        add copy parts buttons here, and create functionaility that splits up the portions of the transcript to meet the 4000 character limit chat gpt has
+
+
+        functionaility should be able to split and based of the modulous create how evr many buttons needed for # of parts 
+        */}
+      </Box>
       <Box
         sx={{
           position: "relative",
