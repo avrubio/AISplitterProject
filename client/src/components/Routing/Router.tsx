@@ -22,7 +22,7 @@ function Router() {
           </ProtectedRoute>
         }
       />
-      {/* TODO:: ADD Login component back, this is temp since server isnt running */}
+
       <Route path="/login" element={<Login />} />
 
       {/* If no matches, display a 404 File Not Found page if logged in. If not logged in, the <ProtectedRoute /> will redirect to the login form. */}
@@ -34,7 +34,6 @@ function Router() {
           </ProtectedRoute>
         }
       />
-      {/* TODO add these routes back once everything should be running as normal */}
       <Route path="/textsplitter" element={<TextSplitter />} />
       <Route path="/youtubetextsplitter" element={<YoutubeTextSplitter />} />
     </Routes>
