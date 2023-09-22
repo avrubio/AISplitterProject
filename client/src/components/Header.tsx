@@ -128,7 +128,7 @@ function Header() {
               <Button
                 key={page}
                 component={Link} // Use Link component instead of "button"
-                to={`/${page.toLowerCase().replace(" ", "")}`} // Specify the URL to navigate to
+                to={`/${page.toLowerCase().replace(/\s+/g, "")}`} // Specify the URL to navigate to
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
