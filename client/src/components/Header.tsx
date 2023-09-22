@@ -1,22 +1,22 @@
-import * as React from "react";
-import { useContext } from "react";
+import * as React from 'react';
+import { useContext } from 'react';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import MenuIcon from "@mui/icons-material/Menu";
-import { Avatar } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
+import MenuIcon from '@mui/icons-material/Menu';
+import { Avatar } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
-import { AccessTokenContext } from "../contexts/AccessTokenContext";
+import { AccessTokenContext } from '../contexts/AccessTokenContext';
 
 const pages = ["History", "Text Splitter", "Youtube Text Splitter"];
 const settings = ["Logout"];
@@ -50,12 +50,11 @@ function Header() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           <Typography
             variant="h6"
             noWrap
             component={Link} // Use Link component instead of "a"
-            to="/test" // Specify the URL to navigate to
+            to="/home" // Specify the URL to navigate to
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -105,7 +104,7 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
+
           <Typography
             variant="h5"
             noWrap
