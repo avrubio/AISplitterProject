@@ -1,4 +1,4 @@
-import {
+import React, {
   ChangeEvent,
   useState,
 } from 'react';
@@ -14,18 +14,35 @@ import Typography from '@mui/material/Typography';
 
 function TextSplitter() {
   const [inputValue, setInputValue] = useState<string>("");
-  const [isCopied, setCopied] = useClipboard(`
-  The total length of the content that I want to send you is too large
-  to send in only one piece. 
-  For sending you that content, I will follow this rule: 
-  [START PART 1/10] this is the content of the part 1 out of 10 in total 
-  [END PART 1/10] Then you just answer: "Received part 1/10" 
-  And when I tell you "ALL PARTS SENT", then you can continue
-  processing the data and answering my requests
-`);
+  const [textChunks, setTextChunks] = useState<string[]>([]);
+  const [isInstructions, setInstructions] = useClipboard(`
+    The total length of the content that I want to send you is too large
+    to send in only one piece. 
+    For sending you that content, I will follow this rule: 
+    [START PART 1/10] this is the content of the part 1 out of 10 in total 
+    [END PART 1/10] Then you just answer: "Received part 1/10" 
+    And when I tell you "ALL PARTS SENT", then you can continue
+    processing the data and answering my requests
+  `);
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+    const chunkSize = 4000;
+    const chunks: string[] = [];
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    // Convert the input value to an array of characters
+    const characters = Array.from(value);
+
+    for (let i = 0; i < characters.length; i += chunkSize) {
+      const chunk = characters.slice(i, i + chunkSize).join("");
+      chunks.push(chunk);
+    }
+
+    setTextChunks(chunks);
+  };
+
+  const handleCopy = (chunk: string) => {
+    navigator.clipboard.writeText(chunk);
   };
 
   return (
@@ -53,7 +70,6 @@ function TextSplitter() {
       >
         Text Splitter
       </Typography>
-
       <Grid container alignItems="center">
         <Grid item xs={12} md={12}>
           <Typography
@@ -76,6 +92,7 @@ function TextSplitter() {
             label="Paste Transcription Here"
             multiline
             minRows={3}
+            maxRows={5} // Limit to 5 lines
             variant="outlined"
             value={inputValue}
             onChange={handleChange}
@@ -99,20 +116,28 @@ function TextSplitter() {
           />
         </Grid>
       </Grid>
-
-      <Typography
-        variant="h6"
-        noWrap
-        sx={{
-          mr: 2,
-          display: { md: "flex" },
-          fontFamily: "monospace",
-          fontWeight: 700,
-          letterSpacing: ".3rem",
-          color: "inherit",
-          textDecoration: "none",
-        }}
-      ></Typography>
+      <div>
+        {textChunks.map((chunk, index) => (
+          <Button
+            key={index}
+            variant="contained"
+            sx={{
+              mt: 2,
+              mr: 2,
+              display: "inline-flex",
+              ml: 10,
+              fontWeight: 400,
+              letterSpacing: ".3rem",
+              textDecoration: "none",
+              borderRadius: 5,
+              alignItems: "center",
+            }}
+            onClick={() => handleCopy(chunk)}
+          >
+            {`Copy Chunk ${index + 1} to Clipboard`}
+          </Button>
+        ))}
+      </div>
 
       <Box
         sx={{
@@ -129,9 +154,9 @@ function TextSplitter() {
           variant="body2"
           sx={{
             position: "absolute",
-            top: "-10px", // Adjust as needed to align with the border
-            left: "8px", // Adjust as needed for positioning
-            backgroundColor: "white", // Semi-transparent background color
+            top: "-10px",
+            left: "8px",
+            backgroundColor: "white",
             padding: "0 4px",
           }}
         >
@@ -150,20 +175,17 @@ function TextSplitter() {
           </p>
         </div>
       </Box>
-
       <Button
         variant="contained"
         sx={{
           mt: 2,
           mr: 2,
           display: { md: "flex" },
-
           fontWeight: 700,
           letterSpacing: ".3rem",
-
           textDecoration: "none",
         }}
-        onClick={setCopied}
+        onClick={setInstructions}
       >
         Copy Instructions (First Step before sending chunks of text to ChatGPT)
       </Button>
