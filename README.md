@@ -4,7 +4,7 @@
 ## Live Demo
 [Live project can be found here!](https://ariadna-aisplitterproject.onrender.com/)
 ## Project Goals
-- To put together and make practical use of what I learned in my CanCode Communites JavaScript Frameworks
+- To put together and make practical use of what I learned in my CanCode Communities JavaScript Frameworks course
 - To get some experience integrating my front-end with a back-end.
 - To learn about developer practices, like setting up an application, maintaining my own git repository and writing a README.md.
 - To learn how to deploy and share my project.
