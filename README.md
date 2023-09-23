@@ -26,9 +26,7 @@
 
 
 ## Getting Started
-For this project, you will start by forking an existing codebase. The existing codebase contains the back-end of your project. You will be writing the front-end.
-
-
+To load this project locally you will first
 Fork the repo and clone your forked version in someplace that you will remember it (e.g. ~/Documents). Open the folder in Visual Studio Code. Open your terminal and install the server.
 ```
 npm install
